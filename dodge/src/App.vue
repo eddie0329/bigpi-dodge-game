@@ -49,7 +49,6 @@ export default {
     this.intervalMakeBall = setInterval(this.makeBall, SEC);
     this.configKonva.width = this.$store.getters["map/configMap"].width;
     this.configKonva.height = this.$store.getters["map/configMap"].height;
-
   },
   components: {
     GamePlayer,

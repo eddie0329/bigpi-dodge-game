@@ -1,22 +1,17 @@
 <template>
   <v-rect
-    :config="configMap"
+    :config="mapStatus"
   />
 </template>
 
 <script>
+
 export default {
-  data() {
-    return {
-      configMap: {
-        x: 0,
-        y: 0,
-        width: 800,
-        height: 800,
-        fill: 'black',
-      }
+  computed: {
+    mapStatus() {
+      return this.$store.getters['map/configMap'];
     }
-  }
+  },
 };
 </script>
 

@@ -5,12 +5,8 @@
 <script>
 import { mapState } from 'vuex';
 export default {
-  data() {
-    return {
-    }
-  },
   computed: {
-    ...mapState("player", ["status"])
+    ...mapState("player", ["status"]),
   }
 };
 </script>

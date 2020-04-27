@@ -47,6 +47,9 @@ export default {
   created() {
     window.addEventListener("keydown", this.onKeyDownMove);
     this.intervalMakeBall = setInterval(this.makeBall, SEC);
+    this.configKonva.width = this.$store.getters["map/configMap"].width;
+    this.configKonva.height = this.$store.getters["map/configMap"].height;
+
   },
   components: {
     GamePlayer,
@@ -59,8 +62,8 @@ export default {
   data() {
     return {
       configKonva: {
-        width: 800,
-        height: 800,
+        width: 0,
+        height: 0,
       },
       blockBalls: [],
       intervalMakeBall: "",

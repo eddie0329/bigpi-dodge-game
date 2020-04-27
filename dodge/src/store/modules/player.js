@@ -9,9 +9,9 @@ const state = {
   status: {
     x: 100,
     y: 100,
-    radius: 70,
+    radius: 10,
     fill: "red",
-    stroke: "black",
+    stroke: "blue",
     strokeWidth: 4,
   }
 };
@@ -20,16 +20,16 @@ const getters = {};
 
 const mutations = {
   [MUTATIONS_CONSTANTS.MOVE_LEFT](state) {
-    state.status.x -= 1;
+    state.status.x -= 10;
   },
   [MUTATIONS_CONSTANTS.MOVE_RIGHT](state) {
-    state.status.x += 1;
+    state.status.x += 10;
   },
   [MUTATIONS_CONSTANTS.MOVE_UP](state) {
-    state.status.y -= 1;
+    state.status.y -= 10;
   },
   [MUTATIONS_CONSTANTS.MOVE_DOWN](state) {
-    state.status.y += 1;
+    state.status.y += 10;
   },
 };
 

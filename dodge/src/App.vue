@@ -2,13 +2,9 @@
   <div id="app">
     <v-stage :config="configKonva">
       <v-layer>
-        <v-rect :config="{
-          x: 0,
-          y: 0,
-          width: 200,
-          height: 200,
-          fill: 'black'
-        }" />
+        <DodgeMap />
+        <BlockBall :config-konva="configKonva" v-for="blockBall in blockBalls" :key="blockBall"/>
+        <!-- <v-circle v-for="(blockBall, index) in blockBalls" :key="index" :config="blockBall" /> -->
         <GamePlayer />
       </v-layer>
     </v-stage>
@@ -16,6 +12,8 @@
 </template>
 
 <script>
+import DodgeMap from "./components/DodgeMap";
+import BlockBall from "./components/BlockBall";
 import GamePlayer from "./components/GamePlayer";
 import * as keyCodeConstants from "./constants/keycodeConstants";
 
@@ -32,20 +30,40 @@ const isArrowUpPressed = (eventKeycode) => {
 const isArrowDownPressed = (eventKeycode) => {
   return eventKeycode === keyCodeConstants.ARROW_DOWN ? true : false;
 };
+
+export function generateId() {
+	const MAX = 100000000;
+	const MIN = 0;
+	const HEXA = 16;
+	// generate number between max and min  -> toString to hexadecimal
+	const newId = (Math.random() * MAX | MIN).toString(HEXA);
+
+	return newId;
+}
+
+const SEC = 1000;
+
 export default {
   created() {
     window.addEventListener("keydown", this.onKeyDownMove);
+    this.intervalMakeBall = setInterval(this.makeBall, SEC);
   },
-  mounted() {},
   components: {
     GamePlayer,
+    DodgeMap,
+    BlockBall,
+  },
+  destroyed() {
+    clearInterval(this.intervalMakeBall);
   },
   data() {
     return {
       configKonva: {
-        width: 200,
-        height: 200,
+        width: 800,
+        height: 800,
       },
+      blockBalls: [],
+      intervalMakeBall: "",
     };
   },
   methods: {
@@ -59,6 +77,10 @@ export default {
       } else if (isArrowDownPressed(e.keyCode)) {
         this.$store.dispatch("player/movePlayerDown");
       }
+    },
+    makeBall() {
+      const blockBallId = generateId();
+      this.blockBalls.push(blockBallId);
     },
   },
 };

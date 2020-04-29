@@ -3,7 +3,6 @@
 </template>
 
 <script>
-const randomInt = (max) => 1 + Math.floor(Math.random() * max);
 
 export default {
   created() {
@@ -13,23 +12,18 @@ export default {
     // clearInterval(this.intervalMoveBall);
   },
   props: {
-    configKonva: {
+    configBlockBall: {
       type: Object,
       required: true,
     },
   },
   data() {
     return {
-      configBlockBall: {
-        x: randomInt(this.configKonva.width),
-        y: 50,
-        radius: 10,
-        fill: "white",
-        stroke: "blue",
-        strokeWidth: 4,
-      },
       intervalMoveBall: "",
     };
+  },
+  computed: {
+
   },
   methods: {
     // moveBall() {

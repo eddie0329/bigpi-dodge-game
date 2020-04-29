@@ -3,7 +3,11 @@
     <v-stage :config="configKonva">
       <v-layer>
         <DodgeMap />
-        <BlockBall :config-konva="configKonva" v-for="blockBall in blockBalls" :key="blockBall"/>
+        <BlockBall
+          v-for="blockBall in blockBalls"
+          :config-block-ball="blockBall.configBlockBall"
+          :key="blockBall.id"
+        />
         <GamePlayer />
       </v-layer>
     </v-stage>
@@ -15,6 +19,7 @@ import DodgeMap from "./components/DodgeMap";
 import BlockBall from "./components/BlockBall";
 import GamePlayer from "./components/GamePlayer";
 import * as keyCodeConstants from "./constants/keycodeConstants";
+import { mapGetters } from "vuex";
 
 const isArrowLeftPressed = (eventKeycode) => {
   return eventKeycode === keyCodeConstants.ARROW_LEFT ? true : false;
@@ -29,16 +34,6 @@ const isArrowUpPressed = (eventKeycode) => {
 const isArrowDownPressed = (eventKeycode) => {
   return eventKeycode === keyCodeConstants.ARROW_DOWN ? true : false;
 };
-
-export function generateId() {
-	const MAX = 100000000;
-	const MIN = 0;
-	const HEXA = 16;
-	// generate number between max and min  -> toString to hexadecimal
-	const newId = (Math.random() * MAX | MIN).toString(HEXA);
-
-	return newId;
-}
 
 const SEC = 1000;
 
@@ -63,9 +58,13 @@ export default {
         width: 0,
         height: 0,
       },
-      blockBalls: [],
       intervalMakeBall: "",
     };
+  },
+  computed: {
+    ...mapGetters({
+      blockBalls: "blockBall/getBlockBalls",
+    }),
   },
   methods: {
     onKeyDownMove(e) {
@@ -80,9 +79,7 @@ export default {
       }
     },
     makeBall() {
-      console.log(this.$store.dispatch("blockBall/addBall"));
-      // const blockBallId = generateId();
-      // this.blockBalls.push(blockBallId);
+      this.$store.dispatch("blockBall/addBall");
     },
   },
 };

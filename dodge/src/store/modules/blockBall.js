@@ -41,6 +41,9 @@ const mutations = {
         y: 0,
         ...defaultBlockBallConfig
       },
+      movingStrategy: (playerPosition) => {
+
+      }
     };
     state.blockBalls.push(blockBall);
   },
@@ -83,9 +86,9 @@ const actions = {
   addBall({ commit, rootGetters }) {
     const payload = rootGetters["map/configMap"];
     commit(MUTATIONS_CONSTANTS.GENERATE_BALL_X, payload);
-    commit(MUTATIONS_CONSTANTS.GENERATE_BALL_Y, payload);
-    commit(MUTATIONS_CONSTANTS.GENERATE_BALL_XY, payload);
-    commit(MUTATIONS_CONSTANTS.GENERATE_BALL_YX, payload);
+    // commit(MUTATIONS_CONSTANTS.GENERATE_BALL_Y, payload);
+    // commit(MUTATIONS_CONSTANTS.GENERATE_BALL_XY, payload);
+    // commit(MUTATIONS_CONSTANTS.GENERATE_BALL_YX, payload);
   },
   removeBall({ commit }) {
     commit(MUTATIONS_CONSTANTS.DELETE_BALL);

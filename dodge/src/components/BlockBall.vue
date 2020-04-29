@@ -7,10 +7,10 @@ const randomInt = (max) => 1 + Math.floor(Math.random() * max);
 
 export default {
   created() {
-    this.moveBall();
+    // this.moveBall();
   },
   destroyed() {
-    clearInterval(this.intervalMoveBall);
+    // clearInterval(this.intervalMoveBall);
   },
   props: {
     configKonva: {
@@ -32,12 +32,12 @@ export default {
     };
   },
   methods: {
-    moveBall() {
-      this.intervalMoveBall = setInterval(() => {
-        this.configBlockBall.x += randomInt(10);
-        this.configBlockBall.y += randomInt(10);
-      }, 100);
-    },
+    // moveBall() {
+    //   this.intervalMoveBall = setInterval(() => {
+    //     this.configBlockBall.x += randomInt(10);
+    //     this.configBlockBall.y += randomInt(10);
+    //   }, 100);
+    // },
   },
 };
 </script>

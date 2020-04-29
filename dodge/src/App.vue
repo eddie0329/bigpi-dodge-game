@@ -4,7 +4,6 @@
       <v-layer>
         <DodgeMap />
         <BlockBall :config-konva="configKonva" v-for="blockBall in blockBalls" :key="blockBall"/>
-        <!-- <v-circle v-for="(blockBall, index) in blockBalls" :key="index" :config="blockBall" /> -->
         <GamePlayer />
       </v-layer>
     </v-stage>
@@ -81,8 +80,9 @@ export default {
       }
     },
     makeBall() {
-      const blockBallId = generateId();
-      this.blockBalls.push(blockBallId);
+      console.log(this.$store.dispatch("blockBall/addBall"));
+      // const blockBallId = generateId();
+      // this.blockBalls.push(blockBallId);
     },
   },
 };

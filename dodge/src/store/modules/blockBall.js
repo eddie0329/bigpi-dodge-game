@@ -1,4 +1,4 @@
-const randomInt = max => 1 + Math.floor(Math.random() * max);
+const randomInt = (max) => 1 + Math.floor(Math.random() * max);
 
 const generateId = () => {
   const MAX = 100000000;
@@ -16,8 +16,8 @@ const MUTATIONS_CONSTANTS = {
   GENERATE_BALL_XY: "GENERATE_BALL_XY",
   GENERATE_BALL_YX: "GENERATE_BALL_YX",
   MOVE_BALL: "MOVE_BALL",
-  DELETE_BALL: "DELETE_BALL",
-  DELETE_ALL_BALLS: "DELETE_ALL_BALLS"
+  DELETE_BALLS: "DELETE_BALLS",
+  RESET_BALLS: "RESET_BALLS",
 };
 
 const makeDefaultBlockBallConfig = () => {
@@ -27,16 +27,16 @@ const makeDefaultBlockBallConfig = () => {
       x: 0,
       y: 0,
       radius: 10,
-      fill: "white"
+      fill: "white",
     },
     playerPosition: {
       x: null,
       y: null,
       towardX: null,
-      towardY: null
+      towardY: null,
     },
-    movingStrategy: payLoad => {
-      const { x, y } = payLoad;
+    movingStrategy: (payload) => {
+      const { x, y } = payload;
       if (
         ballCongfig.playerPosition.x === null &&
         ballCongfig.playerPosition.y === null
@@ -44,24 +44,24 @@ const makeDefaultBlockBallConfig = () => {
         ballCongfig.playerPosition.x = x;
         ballCongfig.playerPosition.y = y;
         ballCongfig.playerPosition.towardX =
-          (ballCongfig.playerPosition.x - ballCongfig.configBlockBall.x) / 100;
+          (ballCongfig.playerPosition.x - ballCongfig.configBlockBall.x) / 10;
         ballCongfig.playerPosition.towardY =
-          (ballCongfig.playerPosition.y - ballCongfig.configBlockBall.y) / 100;
+          (ballCongfig.playerPosition.y - ballCongfig.configBlockBall.y) / 10;
         return;
       }
       ballCongfig.configBlockBall.x += ballCongfig.playerPosition.towardX;
       ballCongfig.configBlockBall.y += ballCongfig.playerPosition.towardY;
-    }
+    },
   };
   return ballCongfig;
 };
 
 const state = {
-  blockBalls: []
+  blockBalls: [],
 };
 
 const getters = {
-  getBlockBalls: state => state.blockBalls
+  getBlockBalls: (state) => state.blockBalls,
 };
 
 const mutations = {
@@ -87,31 +87,47 @@ const mutations = {
     blockBall.configBlockBall.y = randomInt(height);
     state.blockBalls.push(blockBall);
   },
-  [MUTATIONS_CONSTANTS.MOVE_BALL](state, payLoad) {
-    state.blockBalls.forEach(blockBall => {
-      blockBall.movingStrategy(payLoad);
+  [MUTATIONS_CONSTANTS.MOVE_BALL](state, payload) {
+    state.blockBalls.forEach((blockBall) => {
+      blockBall.movingStrategy(payload);
     });
-  }
+  },
+  [MUTATIONS_CONSTANTS.DELETE_BALLS](state, payload) {
+    const { width, height } = payload;
+    state.blockBalls = state.blockBalls.filter((blockBall) => {
+      if (blockBall.configBlockBall.x > width) {
+        return false;
+      } else if (blockBall.configBlockBall.y > height) {
+        return false;
+      } else if (blockBall.configBlockBall.x < 0) {
+        return false;
+      } else if (blockBall.configBlockBall.y < 0) {
+        return false;
+      }
+      return true;
+    });
+  },
 };
 
 const actions = {
   addBall({ commit, rootGetters }) {
-    const payLoad = rootGetters["map/configMap"];
-    commit(MUTATIONS_CONSTANTS.GENERATE_BALL_X, payLoad);
-    commit(MUTATIONS_CONSTANTS.GENERATE_BALL_Y, payLoad);
-    commit(MUTATIONS_CONSTANTS.GENERATE_BALL_XY, payLoad);
-    commit(MUTATIONS_CONSTANTS.GENERATE_BALL_YX, payLoad);
+    const payload = rootGetters["map/configMap"];
+    commit(MUTATIONS_CONSTANTS.GENERATE_BALL_X, payload);
+    // commit(MUTATIONS_CONSTANTS.GENERATE_BALL_Y, payload);
+    // commit(MUTATIONS_CONSTANTS.GENERATE_BALL_XY, payload);
+    // commit(MUTATIONS_CONSTANTS.GENERATE_BALL_YX, payload);
   },
   moveBall({ commit, rootGetters }) {
-    const payLoad = rootGetters["player/getStatus"];
-    commit(MUTATIONS_CONSTANTS.MOVE_BALL, payLoad);
+    const payload = rootGetters["player/getStatus"];
+    commit(MUTATIONS_CONSTANTS.MOVE_BALL, payload);
   },
-  removeBall({ commit }) {
-    commit(MUTATIONS_CONSTANTS.DELETE_BALL);
+  removeBalls({ commit, rootGetters }) {
+    const payload = rootGetters["map/configMap"];
+    commit(MUTATIONS_CONSTANTS.DELETE_BALLS, payload);
   },
-  resetBall({ commit }) {
+  resetBalls({ commit }) {
     commit(MUTATIONS_CONSTANTS.DELETE_ALL_BALL);
-  }
+  },
 };
 
 export default {
@@ -119,5 +135,5 @@ export default {
   state,
   getters,
   mutations,
-  actions
+  actions,
 };

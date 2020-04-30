@@ -81,6 +81,7 @@ export default {
     makeBall() {
       this.$store.dispatch("blockBall/addBall");
       this.$store.dispatch("blockBall/moveBall");
+      this.$store.dispatch("blockBall/removeBalls");
     }
   }
 };

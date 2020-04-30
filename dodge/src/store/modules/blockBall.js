@@ -1,14 +1,4 @@
-const randomInt = (max) => 1 + Math.floor(Math.random() * max);
-
-const generateId = () => {
-  const MAX = 100000000;
-  const MIN = 0;
-  const HEXA = 16;
-  // generate number between max and min  -> toString to hexadecimal
-  const newId = ((Math.random() * MAX) | MIN).toString(HEXA);
-
-  return newId;
-};
+import * as helper from "@/utils/helper";
 
 const MUTATIONS_CONSTANTS = {
   GENERATE_BALL_X: "GENRATE_BALL_X",
@@ -22,7 +12,7 @@ const MUTATIONS_CONSTANTS = {
 
 const makeDefaultBlockBallConfig = () => {
   const ballCongfig = {
-    id: generateId(),
+    id: helper.generateId(),
     configBlockBall: {
       x: 0,
       y: 0,
@@ -67,24 +57,24 @@ const getters = {
 const mutations = {
   [MUTATIONS_CONSTANTS.GENERATE_BALL_X](state, { width }) {
     const blockBall = makeDefaultBlockBallConfig();
-    blockBall.configBlockBall.x = randomInt(width);
+    blockBall.configBlockBall.x = helper.randomInt(width);
     state.blockBalls.push(blockBall);
   },
   [MUTATIONS_CONSTANTS.GENERATE_BALL_Y](state, { height }) {
     const blockBall = makeDefaultBlockBallConfig();
-    blockBall.configBlockBall.y = randomInt(height);
+    blockBall.configBlockBall.y = helper.randomInt(height);
     state.blockBalls.push(blockBall);
   },
   [MUTATIONS_CONSTANTS.GENERATE_BALL_XY](state, { width, height }) {
     const blockBall = makeDefaultBlockBallConfig();
-    blockBall.configBlockBall.x = randomInt(width);
+    blockBall.configBlockBall.x = helper.randomInt(width);
     blockBall.configBlockBall.y = height;
     state.blockBalls.push(blockBall);
   },
   [MUTATIONS_CONSTANTS.GENERATE_BALL_YX](state, { width, height }) {
     const blockBall = makeDefaultBlockBallConfig();
     blockBall.configBlockBall.x = width;
-    blockBall.configBlockBall.y = randomInt(height);
+    blockBall.configBlockBall.y = helper.randomInt(height);
     state.blockBalls.push(blockBall);
   },
   [MUTATIONS_CONSTANTS.MOVE_BALL](state, payload) {

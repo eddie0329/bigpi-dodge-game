@@ -20,9 +20,37 @@ const MUTATIONS_CONSTANTS = {
   DELETE_ALL_BALLS: "DELETE_ALL_BALLS"
 };
 
-const defaultBlockBallConfig = {
-  radius: 10,
-  fill: "white"
+const defaultBlockBallConfig = () => {
+  const balls = {
+    id: generateId(),
+    configBlockBall: {
+      x: 0,
+      y: 0,
+      radius: 10,
+      fill: "white"
+    },
+    playerPosition: {
+      x: null,
+      y: null,
+      towardX: null,
+      towardY: null
+    },
+    movingStrategy: payLoad => {
+      const { x, y } = payLoad;
+      if (balls.playerPosition.x === null && balls.playerPosition.y === null) {
+        balls.playerPosition.x = x;
+        balls.playerPosition.y = y;
+        balls.playerPosition.towardX =
+          (balls.playerPosition.x - balls.configBlockBall.x) / 100;
+        balls.playerPosition.towardY =
+          (balls.playerPosition.y - balls.configBlockBall.y) / 100;
+        return;
+      }
+      balls.configBlockBall.x += balls.playerPosition.towardX;
+      balls.configBlockBall.y += balls.playerPosition.towardY;
+    }
+  };
+  return balls;
 };
 
 const state = {
@@ -35,143 +63,25 @@ const getters = {
 
 const mutations = {
   [MUTATIONS_CONSTANTS.GENERATE_BALL_X](state, { width }) {
-    const blockBall = {
-      id: generateId(),
-      configBlockBall: {
-        x: randomInt(width),
-        y: 0,
-        ...defaultBlockBallConfig
-      },
-      playerPosition: {
-        x: null,
-        y: null,
-        towardX: null,
-        towardY: null
-      },
-      movingStrategy: payLoad => {
-        const { x, y } = payLoad;
-        if (
-          blockBall.playerPosition.x === null &&
-          blockBall.playerPosition.y === null
-        ) {
-          blockBall.playerPosition.x = x;
-          blockBall.playerPosition.y = y;
-          blockBall.playerPosition.towardX =
-            (blockBall.playerPosition.x - blockBall.configBlockBall.x) / 10;
-          blockBall.playerPosition.towardY =
-            (blockBall.playerPosition.y - blockBall.configBlockBall.y) / 10;
-          return;
-        }
-
-        blockBall.configBlockBall.x += blockBall.playerPosition.towardX;
-        blockBall.configBlockBall.y += blockBall.playerPosition.towardY;
-      }
-    };
+    const blockBall = defaultBlockBallConfig();
+    blockBall.configBlockBall.x = randomInt(width);
     state.blockBalls.push(blockBall);
   },
   [MUTATIONS_CONSTANTS.GENERATE_BALL_Y](state, { height }) {
-    const blockBall = {
-      id: generateId(),
-      configBlockBall: {
-        x: 0,
-        y: randomInt(height),
-        ...defaultBlockBallConfig
-      },
-      playerPosition: {
-        x: null,
-        y: null,
-        towardX: null,
-        towardY: null
-      },
-      movingStrategy: payLoad => {
-        const { x, y } = payLoad;
-        if (
-          blockBall.playerPosition.x === null &&
-          blockBall.playerPosition.y === null
-        ) {
-          blockBall.playerPosition.x = x;
-          blockBall.playerPosition.y = y;
-          blockBall.playerPosition.towardX =
-            (blockBall.playerPosition.x - blockBall.configBlockBall.x) / 10;
-          blockBall.playerPosition.towardY =
-            (blockBall.playerPosition.y - blockBall.configBlockBall.y) / 10;
-          return;
-        }
-
-        blockBall.configBlockBall.x += blockBall.playerPosition.towardX;
-        blockBall.configBlockBall.y += blockBall.playerPosition.towardY;
-      }
-    };
+    const blockBall = defaultBlockBallConfig();
+    blockBall.configBlockBall.y = randomInt(height);
     state.blockBalls.push(blockBall);
   },
   [MUTATIONS_CONSTANTS.GENERATE_BALL_XY](state, { width, height }) {
-    const blockBall = {
-      id: generateId(),
-      configBlockBall: {
-        x: randomInt(width),
-        y: height,
-        ...defaultBlockBallConfig
-      },
-      playerPosition: {
-        x: null,
-        y: null,
-        towardX: null,
-        towardY: null
-      },
-      movingStrategy: payLoad => {
-        const { x, y } = payLoad;
-        if (
-          blockBall.playerPosition.x === null &&
-          blockBall.playerPosition.y === null
-        ) {
-          blockBall.playerPosition.x = x;
-          blockBall.playerPosition.y = y;
-          blockBall.playerPosition.towardX =
-            (blockBall.playerPosition.x - blockBall.configBlockBall.x) / 10;
-          blockBall.playerPosition.towardY =
-            (blockBall.playerPosition.y - blockBall.configBlockBall.y) / 10;
-          return;
-        }
-
-        blockBall.configBlockBall.x += blockBall.playerPosition.towardX;
-        blockBall.configBlockBall.y += blockBall.playerPosition.towardY;
-      }
-    };
+    const blockBall = defaultBlockBallConfig();
+    blockBall.configBlockBall.x = randomInt(width);
+    blockBall.configBlockBall.y = height;
     state.blockBalls.push(blockBall);
   },
   [MUTATIONS_CONSTANTS.GENERATE_BALL_YX](state, { width, height }) {
-    const blockBall = {
-      id: generateId(),
-      configBlockBall: {
-        x: width,
-        y: randomInt(height),
-        ...defaultBlockBallConfig
-      },
-      playerPosition: {
-        x: null,
-        y: null,
-        towardX: null,
-        towardY: null
-      },
-      movingStrategy: payLoad => {
-        const { x, y } = payLoad;
-        if (
-          blockBall.playerPosition.x === null &&
-          blockBall.playerPosition.y === null
-        ) {
-          blockBall.playerPosition.x = x;
-          blockBall.playerPosition.y = y;
-          blockBall.playerPosition.towardX =
-            (blockBall.playerPosition.x - blockBall.configBlockBall.x) / 10;
-          blockBall.playerPosition.towardY =
-            (blockBall.playerPosition.y - blockBall.configBlockBall.y) / 10;
-          return;
-        }
-
-        blockBall.configBlockBall.x += blockBall.playerPosition.towardX;
-        blockBall.configBlockBall.y += blockBall.playerPosition.towardY;
-      }
-    };
+    const blockBall = defaultBlockBallConfig();
+    blockBall.configBlockBall.x = width;
+    blockBall.configBlockBall.y = randomInt(height);
     state.blockBalls.push(blockBall);
   },
   [MUTATIONS_CONSTANTS.MOVE_BALL](state, payLoad) {

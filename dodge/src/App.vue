@@ -21,33 +21,33 @@ import GamePlayer from "./components/GamePlayer";
 import * as keyCodeConstants from "./constants/keycodeConstants";
 import { mapGetters } from "vuex";
 
-const isArrowLeftPressed = (eventKeycode) => {
+const isArrowLeftPressed = eventKeycode => {
   return eventKeycode === keyCodeConstants.ARROW_LEFT ? true : false;
 };
-const isArrowRightPressed = (eventKeycode) => {
+const isArrowRightPressed = eventKeycode => {
   return eventKeycode === keyCodeConstants.ARROW_RIGHT ? true : false;
 };
-const isArrowUpPressed = (eventKeycode) => {
+const isArrowUpPressed = eventKeycode => {
   return eventKeycode === keyCodeConstants.ARROW_UP ? true : false;
 };
 
-const isArrowDownPressed = (eventKeycode) => {
+const isArrowDownPressed = eventKeycode => {
   return eventKeycode === keyCodeConstants.ARROW_DOWN ? true : false;
 };
 
-const SEC = 1000;
+// const SEC = 1000;
 
 export default {
   created() {
     window.addEventListener("keydown", this.onKeyDownMove);
-    this.intervalMakeBall = setInterval(this.makeBall, SEC);
+    this.intervalMakeBall = setInterval(this.makeBall, 1000);
     this.configKonva.width = this.$store.getters["map/configMap"].width;
     this.configKonva.height = this.$store.getters["map/configMap"].height;
   },
   components: {
     GamePlayer,
     DodgeMap,
-    BlockBall,
+    BlockBall
   },
   destroyed() {
     clearInterval(this.intervalMakeBall);
@@ -56,15 +56,15 @@ export default {
     return {
       configKonva: {
         width: 0,
-        height: 0,
+        height: 0
       },
-      intervalMakeBall: "",
+      intervalMakeBall: ""
     };
   },
   computed: {
     ...mapGetters({
-      blockBalls: "blockBall/getBlockBalls",
-    }),
+      blockBalls: "blockBall/getBlockBalls"
+    })
   },
   methods: {
     onKeyDownMove(e) {
@@ -80,7 +80,8 @@ export default {
     },
     makeBall() {
       this.$store.dispatch("blockBall/addBall");
-    },
-  },
+      this.$store.dispatch("blockBall/moveBall");
+    }
+  }
 };
 </script>

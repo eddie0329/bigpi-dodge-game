@@ -20,8 +20,8 @@ const MUTATIONS_CONSTANTS = {
   DELETE_ALL_BALLS: "DELETE_ALL_BALLS"
 };
 
-const defaultBlockBallConfig = () => {
-  const balls = {
+const makeDefaultBlockBallConfig = () => {
+  const ballCongfig = {
     id: generateId(),
     configBlockBall: {
       x: 0,
@@ -37,20 +37,23 @@ const defaultBlockBallConfig = () => {
     },
     movingStrategy: payLoad => {
       const { x, y } = payLoad;
-      if (balls.playerPosition.x === null && balls.playerPosition.y === null) {
-        balls.playerPosition.x = x;
-        balls.playerPosition.y = y;
-        balls.playerPosition.towardX =
-          (balls.playerPosition.x - balls.configBlockBall.x) / 100;
-        balls.playerPosition.towardY =
-          (balls.playerPosition.y - balls.configBlockBall.y) / 100;
+      if (
+        ballCongfig.playerPosition.x === null &&
+        ballCongfig.playerPosition.y === null
+      ) {
+        ballCongfig.playerPosition.x = x;
+        ballCongfig.playerPosition.y = y;
+        ballCongfig.playerPosition.towardX =
+          (ballCongfig.playerPosition.x - ballCongfig.configBlockBall.x) / 100;
+        ballCongfig.playerPosition.towardY =
+          (ballCongfig.playerPosition.y - ballCongfig.configBlockBall.y) / 100;
         return;
       }
-      balls.configBlockBall.x += balls.playerPosition.towardX;
-      balls.configBlockBall.y += balls.playerPosition.towardY;
+      ballCongfig.configBlockBall.x += ballCongfig.playerPosition.towardX;
+      ballCongfig.configBlockBall.y += ballCongfig.playerPosition.towardY;
     }
   };
-  return balls;
+  return ballCongfig;
 };
 
 const state = {
@@ -63,23 +66,23 @@ const getters = {
 
 const mutations = {
   [MUTATIONS_CONSTANTS.GENERATE_BALL_X](state, { width }) {
-    const blockBall = defaultBlockBallConfig();
+    const blockBall = makeDefaultBlockBallConfig();
     blockBall.configBlockBall.x = randomInt(width);
     state.blockBalls.push(blockBall);
   },
   [MUTATIONS_CONSTANTS.GENERATE_BALL_Y](state, { height }) {
-    const blockBall = defaultBlockBallConfig();
+    const blockBall = makeDefaultBlockBallConfig();
     blockBall.configBlockBall.y = randomInt(height);
     state.blockBalls.push(blockBall);
   },
   [MUTATIONS_CONSTANTS.GENERATE_BALL_XY](state, { width, height }) {
-    const blockBall = defaultBlockBallConfig();
+    const blockBall = makeDefaultBlockBallConfig();
     blockBall.configBlockBall.x = randomInt(width);
     blockBall.configBlockBall.y = height;
     state.blockBalls.push(blockBall);
   },
   [MUTATIONS_CONSTANTS.GENERATE_BALL_YX](state, { width, height }) {
-    const blockBall = defaultBlockBallConfig();
+    const blockBall = makeDefaultBlockBallConfig();
     blockBall.configBlockBall.x = width;
     blockBall.configBlockBall.y = randomInt(height);
     state.blockBalls.push(blockBall);

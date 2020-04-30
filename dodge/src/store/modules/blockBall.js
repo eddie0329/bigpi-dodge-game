@@ -107,15 +107,18 @@ const mutations = {
       return true;
     });
   },
+  [MUTATIONS_CONSTANTS.RESET_BALLS](state) {
+    state.blockBalls = [];
+  },
 };
 
 const actions = {
   addBall({ commit, rootGetters }) {
     const payload = rootGetters["map/configMap"];
     commit(MUTATIONS_CONSTANTS.GENERATE_BALL_X, payload);
-    // commit(MUTATIONS_CONSTANTS.GENERATE_BALL_Y, payload);
-    // commit(MUTATIONS_CONSTANTS.GENERATE_BALL_XY, payload);
-    // commit(MUTATIONS_CONSTANTS.GENERATE_BALL_YX, payload);
+    commit(MUTATIONS_CONSTANTS.GENERATE_BALL_Y, payload);
+    commit(MUTATIONS_CONSTANTS.GENERATE_BALL_XY, payload);
+    commit(MUTATIONS_CONSTANTS.GENERATE_BALL_YX, payload);
   },
   moveBall({ commit, rootGetters }) {
     const payload = rootGetters["player/getStatus"];

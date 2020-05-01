@@ -1,3 +1,19 @@
+const isPlayerInsideOfLeftMap = ({ x, radius }) => {
+  return x > radius;
+};
+
+const isPlayerInsideOfRightMap = ({ x, radius }, width) => {
+  return x < width - radius;
+};
+
+const isPlayerInsideOfUpMap = ({ y, radius }) => {
+  return y > radius;
+};
+
+const isPlayerInsideOfDownMap = ({ y, radius }, height) => {
+  return y < height - radius;
+};
+
 const MUTATIONS_CONSTANTS = {
   MOVE_LEFT: "MOVE_LEFT",
   MOVE_RIGHT: "MOVE_RIGHT",
@@ -22,22 +38,22 @@ const getters = {
 
 const mutations = {
   [MUTATIONS_CONSTANTS.MOVE_LEFT](state) {
-    if (state.status.x > state.status.radius) {
+    if (isPlayerInsideOfLeftMap(state.status)) {
       state.status.x -= 10;
     }
   },
   [MUTATIONS_CONSTANTS.MOVE_RIGHT](state, { width }) {
-    if (state.status.x < width - state.status.radius) {
+    if (isPlayerInsideOfRightMap(state.status, width)) {
       state.status.x += 10;
     }
   },
   [MUTATIONS_CONSTANTS.MOVE_UP](state) {
-    if (state.status.y > state.status.radius) {
+    if (isPlayerInsideOfUpMap(state.status)) {
       state.status.y -= 10;
     }
   },
   [MUTATIONS_CONSTANTS.MOVE_DOWN](state, { height }) {
-    if (state.status.y < height - state.status.radius) {
+    if (isPlayerInsideOfDownMap(state.status, height)) {
       state.status.y += 10;
     }
   },

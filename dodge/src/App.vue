@@ -40,7 +40,7 @@ const isArrowDownPressed = eventKeycode => {
 export default {
   created() {
     window.addEventListener("keydown", this.onKeyDownMove);
-    this.intervalMakeBall = setInterval(this.makeBall, 1000);
+    // this.intervalMakeBall = setInterval(this.startGame, 1000);
     this.configKonva.width = this.$store.getters["map/configMap"].width;
     this.configKonva.height = this.$store.getters["map/configMap"].height;
   },
@@ -78,7 +78,7 @@ export default {
         this.$store.dispatch("player/movePlayerDown");
       }
     },
-    makeBall() {
+    startGame() {
       this.$store.dispatch("blockBall/addBall");
       this.$store.dispatch("blockBall/moveBall");
       this.$store.dispatch("blockBall/removeBalls");

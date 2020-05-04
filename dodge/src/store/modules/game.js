@@ -34,7 +34,7 @@ const mutations = {
       dispatch("blockBall/moveBall", null, { root: true });
       dispatch("blockBall/removeBalls", null, { root: true });
       dispatch("checkCollision");
-    }, 200);
+    }, 10);
     state.intervalScore = setInterval(() => {
       dispatch("addScore");
     }, 1);
@@ -48,13 +48,14 @@ const mutations = {
     const { blockBall, player } = rootState;
     blockBall.blockBalls.forEach((blockBall) => {
       if (
-        player.status.x + player.status.radius + 5 >
+        player.status.x + player.status.radius - 3 >
           blockBall.configBlockBall.x &&
-        player.status.x - player.status.radius + 5 <
+        player.status.x - player.status.radius + 3 <
           blockBall.configBlockBall.x &&
-        player.status.y + player.status.radius + 5 >
+        player.status.y + player.status.radius - 3 >
           blockBall.configBlockBall.y &&
-        player.status.y - player.status.radius + 5 < blockBall.configBlockBall.y
+        player.status.y - player.status.radius + 3 <
+          blockBall.configBlockBall.y
       ) {
         dispatch("endGame");
         dispatch("blockBall/resetBalls", null, { root: true });

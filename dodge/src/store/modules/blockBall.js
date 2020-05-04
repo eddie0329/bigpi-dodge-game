@@ -34,9 +34,9 @@ const makeDefaultBlockBallConfig = () => {
         ballCongfig.playerPosition.x = x;
         ballCongfig.playerPosition.y = y;
         ballCongfig.playerPosition.towardX =
-          (ballCongfig.playerPosition.x - ballCongfig.configBlockBall.x) / 25;
+          (ballCongfig.playerPosition.x - ballCongfig.configBlockBall.x) / 100;
         ballCongfig.playerPosition.towardY =
-          (ballCongfig.playerPosition.y - ballCongfig.configBlockBall.y) / 25;
+          (ballCongfig.playerPosition.y - ballCongfig.configBlockBall.y) / 100;
         return;
       }
       ballCongfig.configBlockBall.x += ballCongfig.playerPosition.towardX;

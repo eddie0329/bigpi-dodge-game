@@ -1,27 +1,28 @@
 <template>
-  <v-text :config="configStartText" />
+  <v-text :config="configScore" />
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 
 export default {
   props: {
     mapHeight: {
       type: Number,
-      required: true
+      required: true,
     },
     mapWidth: {
       type: Number,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
-      configStartText: {
+      configScore: {
         width: this.mapWidth,
-        height: this.mapHeight,
-        text: "Press Enter \n to Start Dodge Game",
-        fontSize: 35,
+        height: this.mapHeight / 10,
+        text: "00:00:00",
+        fontSize: 20,
         align: "center",
         verticalAlign: "middle",
         fill: "white",
@@ -29,6 +30,16 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapGetters({
+      score: "game/getScore"
+    })
+  },
+  watch: {
+    score(oldValue, newValue){
+      this.configScore.text = newValue;
+    }
+  }
 };
 </script>
 

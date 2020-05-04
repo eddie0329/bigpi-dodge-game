@@ -4,6 +4,7 @@
       <v-layer>
         <DodgeMap />
         <template v-if="gameStatus">
+          <MyScore :map-height="getHeight" :map-width="getWidth" />
           <BlockBall
             v-for="blockBall in blockBalls"
             :config-block-ball="blockBall.configBlockBall"
@@ -21,6 +22,7 @@
 
 <script>
 import DodgeMap from "./components/DodgeMap";
+import MyScore from "./components/MyScore";
 import BlockBall from "./components/BlockBall";
 import GamePlayer from "./components/GamePlayer";
 import InitText from "./components/InitText";
@@ -45,20 +47,18 @@ const isEnterPressed = (eventKeycode) => {
   return eventKeycode === keyCodeConstants.ENTER;
 };
 
-// const SEC = 1000;
-
 export default {
   created() {
     window.addEventListener("keydown", this.onKeyPressed);
     this.configKonva.width = this.$store.getters["map/configMap"].width;
     this.configKonva.height = this.$store.getters["map/configMap"].height;
-
   },
   components: {
     GamePlayer,
     DodgeMap,
     BlockBall,
     InitText,
+    MyScore,
   },
   destroyed() {
     clearInterval(this.intervalMakeBall);

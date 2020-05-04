@@ -1,3 +1,7 @@
+const addZero = (num) => {
+  return num < 10 ? "0" + num : "" + num;
+};
+
 const MUTATION_CONSTANTS = {
   INIT_GAME: "INIT_GAME",
   FINISH_GAME: "FINISH_GAME",
@@ -9,9 +13,11 @@ const MUTATION_CONSTANTS = {
 const state = {
   gameStatus: {
     gameStart: false,
-    score: 0,
+    score: "00:00:00",
   },
   intervalBlockBall: null,
+  startTime: null,
+  endTime: null,
   intervalScore: null,
 };
 
@@ -31,7 +37,7 @@ const mutations = {
     }, 200);
     state.intervalScore = setInterval(() => {
       dispatch("addScore");
-    }, 100);
+    }, 1);
   },
   [MUTATION_CONSTANTS.FINISH_GAME](state, dispatch) {
     state.gameStatus.gameStart = false;
@@ -42,9 +48,12 @@ const mutations = {
     const { blockBall, player } = rootState;
     blockBall.blockBalls.forEach((blockBall) => {
       if (
-        player.status.x + player.status.radius + 5 > blockBall.configBlockBall.x &&
-        player.status.x - player.status.radius + 5 < blockBall.configBlockBall.x &&
-        player.status.y + player.status.radius + 5 > blockBall.configBlockBall.y &&
+        player.status.x + player.status.radius + 5 >
+          blockBall.configBlockBall.x &&
+        player.status.x - player.status.radius + 5 <
+          blockBall.configBlockBall.x &&
+        player.status.y + player.status.radius + 5 >
+          blockBall.configBlockBall.y &&
         player.status.y - player.status.radius + 5 < blockBall.configBlockBall.y
       ) {
         dispatch("endGame");
@@ -53,10 +62,23 @@ const mutations = {
     });
   },
   [MUTATION_CONSTANTS.INIT_SCORE](state) {
-    state.gameStatus.score += 1;
+    if (state.startTime === null) {
+      state.startTime = new Date().getTime();
+    }
+    state.endTime = new Date().getTime();
+    const newTime = new Date(state.endTime - state.startTime);
+    const min = newTime.getMinutes();
+    const strMin = addZero(min);
+    const sec = newTime.getSeconds();
+    const strSec = addZero(sec);
+    const millisec = Math.floor(newTime.getMilliseconds() / 10);
+    const strMillisec = addZero(millisec);
+
+    state.gameStatus.score = `${strMin}:${strSec}:${strMillisec}`;
   },
   [MUTATION_CONSTANTS.REVERT_SCORE](state) {
-    state.gameStatus.score = 0;
+    state.gameStatus.score = "00:00:00";
+    state.startTime = null;
     clearInterval(state.intervalScore);
   },
 };

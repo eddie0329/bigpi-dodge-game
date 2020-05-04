@@ -2,9 +2,9 @@ const state = {
   mapStatus: {
     x: 0,
     y: 0,
-    width: 800,
-    height: 800,
-    fill: "black",
+    width: 400,
+    height: 400,
+    fill: "#012156",
   },
 };
 

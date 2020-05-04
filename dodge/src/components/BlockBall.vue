@@ -5,12 +5,6 @@
 <script>
 
 export default {
-  created() {
-    // this.moveBall();
-  },
-  destroyed() {
-    // clearInterval(this.intervalMoveBall);
-  },
   props: {
     configBlockBall: {
       type: Object,
@@ -24,14 +18,6 @@ export default {
   },
   computed: {
 
-  },
-  methods: {
-    // moveBall() {
-    //   this.intervalMoveBall = setInterval(() => {
-    //     this.configBlockBall.x += randomInt(10);
-    //     this.configBlockBall.y += randomInt(10);
-    //   }, 100);
-    // },
   },
 };
 </script>

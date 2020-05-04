@@ -1,14 +1,19 @@
 <template>
   <div id="app">
-    <v-stage :config="configKonva">
+    <v-stage ref="stage" :config="configKonva">
       <v-layer>
         <DodgeMap />
-        <BlockBall
-          v-for="blockBall in blockBalls"
-          :config-block-ball="blockBall.configBlockBall"
-          :key="blockBall.id"
-        />
-        <GamePlayer />
+        <template v-if="gameStatus">
+          <BlockBall
+            v-for="blockBall in blockBalls"
+            :config-block-ball="blockBall.configBlockBall"
+            :key="blockBall.id"
+          />
+          <GamePlayer />
+        </template>
+        <template v-else>
+          <InitText :map-height="getHeight" :map-width="getWidth"/>
+        </template>
       </v-layer>
     </v-stage>
   </div>
@@ -18,36 +23,41 @@
 import DodgeMap from "./components/DodgeMap";
 import BlockBall from "./components/BlockBall";
 import GamePlayer from "./components/GamePlayer";
+import InitText from "./components/InitText";
 import * as keyCodeConstants from "./constants/keycodeConstants";
 import { mapGetters } from "vuex";
 
-const isArrowLeftPressed = eventKeycode => {
-  return eventKeycode === keyCodeConstants.ARROW_LEFT ? true : false;
+const isArrowLeftPressed = (eventKeycode) => {
+  return eventKeycode === keyCodeConstants.ARROW_LEFT;
 };
-const isArrowRightPressed = eventKeycode => {
-  return eventKeycode === keyCodeConstants.ARROW_RIGHT ? true : false;
+const isArrowRightPressed = (eventKeycode) => {
+  return eventKeycode === keyCodeConstants.ARROW_RIGHT;
 };
-const isArrowUpPressed = eventKeycode => {
-  return eventKeycode === keyCodeConstants.ARROW_UP ? true : false;
+const isArrowUpPressed = (eventKeycode) => {
+  return eventKeycode === keyCodeConstants.ARROW_UP;
 };
 
-const isArrowDownPressed = eventKeycode => {
-  return eventKeycode === keyCodeConstants.ARROW_DOWN ? true : false;
+const isArrowDownPressed = (eventKeycode) => {
+  return eventKeycode === keyCodeConstants.ARROW_DOWN;
 };
+
+const isEnterPressed = (eventKeycode) => {
+  return eventKeycode === keyCodeConstants.ENTER;
+}
 
 // const SEC = 1000;
 
 export default {
   created() {
-    window.addEventListener("keydown", this.onKeyDownMove);
-    // this.intervalMakeBall = setInterval(this.startGame, 1000);
+    window.addEventListener("keydown", this.onKeyPressed);
     this.configKonva.width = this.$store.getters["map/configMap"].width;
     this.configKonva.height = this.$store.getters["map/configMap"].height;
   },
   components: {
     GamePlayer,
     DodgeMap,
-    BlockBall
+    BlockBall,
+    InitText
   },
   destroyed() {
     clearInterval(this.intervalMakeBall);
@@ -56,18 +66,25 @@ export default {
     return {
       configKonva: {
         width: 0,
-        height: 0
+        height: 0,
       },
-      intervalMakeBall: ""
+      intervalMakeBall: "",
     };
   },
   computed: {
     ...mapGetters({
-      blockBalls: "blockBall/getBlockBalls"
-    })
+      blockBalls: "blockBall/getBlockBalls",
+      gameStatus: "game/getGameStatus",
+    }),
+    getHeight() {
+      return this.configKonva.height;
+    },
+    getWidth() {
+      return this.configKonva.width;
+    }
   },
   methods: {
-    onKeyDownMove(e) {
+    onKeyPressed(e) {
       if (isArrowLeftPressed(e.keyCode)) {
         this.$store.dispatch("player/movePlayerLeft");
       } else if (isArrowRightPressed(e.keyCode)) {
@@ -76,13 +93,10 @@ export default {
         this.$store.dispatch("player/movePlayerUp");
       } else if (isArrowDownPressed(e.keyCode)) {
         this.$store.dispatch("player/movePlayerDown");
+      } else if (isEnterPressed(e.keyCode)) {
+        this.$store.dispatch("game/startGame");
       }
     },
-    startGame() {
-      this.$store.dispatch("blockBall/addBall");
-      this.$store.dispatch("blockBall/moveBall");
-      this.$store.dispatch("blockBall/removeBalls");
-    }
-  }
+  },
 };
 </script>

@@ -19,7 +19,8 @@ const MUTATIONS_CONSTANTS = {
   MOVE_RIGHT: "MOVE_RIGHT",
   MOVE_UP: "MOVE_UP",
   MOVE_DOWN: "MOVE_DOWN",
-  INIT_POSITION: "INIT_POSIOTION"
+  INIT_POSITION: "INIT_POSIOTION",
+  CONSTRUCT_PLAYER: "CONSTRUCT_PLAYER"
 };
 
 const state = {
@@ -61,6 +62,9 @@ const mutations = {
   [MUTATIONS_CONSTANTS.INIT_POSITION](state) {
     state.status.x = 200;
     state.status.y = 200;
+  },
+  [MUTATIONS_CONSTANTS.CONSTRUCT_PLAYER](state, image) {
+    state.status.image = image;
   }
 };
 
@@ -81,6 +85,9 @@ const actions = {
   },
   resetPosition({ commit }) {
     commit(MUTATIONS_CONSTANTS.INIT_POSITION);
+  },
+  setPlayer({ commit }, image) {
+    commit(MUTATIONS_CONSTANTS.CONSTRUCT_PLAYER, image);
   }
 };
 

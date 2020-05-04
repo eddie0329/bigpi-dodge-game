@@ -21,7 +21,7 @@ export default {
         width: this.mapWidth,
         height: this.mapHeight,
         text: "Press Enter \n to Start Dodge Game",
-        fontSize: 40,
+        fontSize: 35,
         align: "center",
         verticalAlign: "middle",
         fill: "white",

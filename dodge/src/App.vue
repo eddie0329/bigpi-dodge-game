@@ -12,7 +12,7 @@
           <GamePlayer />
         </template>
         <template v-else>
-          <InitText :map-height="getHeight" :map-width="getWidth"/>
+          <InitText :map-height="getHeight" :map-width="getWidth" />
         </template>
       </v-layer>
     </v-stage>
@@ -43,7 +43,7 @@ const isArrowDownPressed = (eventKeycode) => {
 
 const isEnterPressed = (eventKeycode) => {
   return eventKeycode === keyCodeConstants.ENTER;
-}
+};
 
 // const SEC = 1000;
 
@@ -52,12 +52,13 @@ export default {
     window.addEventListener("keydown", this.onKeyPressed);
     this.configKonva.width = this.$store.getters["map/configMap"].width;
     this.configKonva.height = this.$store.getters["map/configMap"].height;
+
   },
   components: {
     GamePlayer,
     DodgeMap,
     BlockBall,
-    InitText
+    InitText,
   },
   destroyed() {
     clearInterval(this.intervalMakeBall);
@@ -81,7 +82,7 @@ export default {
     },
     getWidth() {
       return this.configKonva.width;
-    }
+    },
   },
   methods: {
     onKeyPressed(e) {

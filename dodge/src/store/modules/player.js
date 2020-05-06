@@ -1,4 +1,4 @@
-import { playerMoveRate } from "../../constants/gameSettings.js"
+import { playerMoveRate } from "@/constants/gameSettings.js";
 
 const isPlayerInsideOfLeftMap = ({ x, radius }) => {
   return x > radius;
@@ -17,7 +17,7 @@ const isPlayerInsideOfDownMap = ({ y, radius }, height) => {
 };
 
 const moveAnimation = (movingStrategy, state) => {
-  for (let i = 1; i <= 10; i++) {
+  for (let i = 1; i <= 20; i++) {
     setTimeout(() => {
       movingStrategy(state);
     }, playerMoveRate * i);

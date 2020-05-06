@@ -1,3 +1,5 @@
+import { playerMoveRate } from "../../constants/gameSettings.js"
+
 const isPlayerInsideOfLeftMap = ({ x, radius }) => {
   return x > radius;
 };
@@ -14,13 +16,37 @@ const isPlayerInsideOfDownMap = ({ y, radius }, height) => {
   return y < height - radius;
 };
 
+const moveAnimation = (movingStrategy, state) => {
+  for (let i = 1; i <= 10; i++) {
+    setTimeout(() => {
+      movingStrategy(state);
+    }, playerMoveRate * i);
+  }
+};
+
+const playerGoLeft = ({ status }) => {
+  status.x -= 1;
+};
+
+const playerGoRight = ({ status }) => {
+  status.x += 1;
+};
+
+const playerGoUp = ({ status }) => {
+  status.y -= 1;
+};
+
+const playerGoDown = ({ status }) => {
+  status.y += 1;
+};
+
 const MUTATIONS_CONSTANTS = {
   MOVE_LEFT: "MOVE_LEFT",
   MOVE_RIGHT: "MOVE_RIGHT",
   MOVE_UP: "MOVE_UP",
   MOVE_DOWN: "MOVE_DOWN",
   INIT_POSITION: "INIT_POSIOTION",
-  CONSTRUCT_PLAYER: "CONSTRUCT_PLAYER"
+  CONSTRUCT_PLAYER: "CONSTRUCT_PLAYER",
 };
 
 const state = {
@@ -32,6 +58,7 @@ const state = {
     stroke: "blue",
     strokeWidth: 1,
   },
+  intervalPlayerMove: null,
 };
 
 const getters = {
@@ -41,31 +68,32 @@ const getters = {
 const mutations = {
   [MUTATIONS_CONSTANTS.MOVE_LEFT](state) {
     if (isPlayerInsideOfLeftMap(state.status)) {
-      state.status.x -= 10;
+      moveAnimation(playerGoLeft, state);
     }
   },
   [MUTATIONS_CONSTANTS.MOVE_RIGHT](state, { width }) {
     if (isPlayerInsideOfRightMap(state.status, width)) {
-      state.status.x += 10;
+      moveAnimation(playerGoRight, state);
     }
   },
   [MUTATIONS_CONSTANTS.MOVE_UP](state) {
     if (isPlayerInsideOfUpMap(state.status)) {
-      state.status.y -= 10;
+      moveAnimation(playerGoUp, state);
     }
   },
   [MUTATIONS_CONSTANTS.MOVE_DOWN](state, { height }) {
     if (isPlayerInsideOfDownMap(state.status, height)) {
-      state.status.y += 10;
+      moveAnimation(playerGoDown, state);
     }
   },
   [MUTATIONS_CONSTANTS.INIT_POSITION](state) {
     state.status.x = 200;
     state.status.y = 200;
+    clearInterval(state.intervalPlayerMove);
   },
   [MUTATIONS_CONSTANTS.CONSTRUCT_PLAYER](state, image) {
     state.status.image = image;
-  }
+  },
 };
 
 const actions = {
@@ -88,7 +116,7 @@ const actions = {
   },
   setPlayer({ commit }, image) {
     commit(MUTATIONS_CONSTANTS.CONSTRUCT_PLAYER, image);
-  }
+  },
 };
 
 export default {

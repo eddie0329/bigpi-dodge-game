@@ -11,6 +11,7 @@
             :key="blockBall.id"
           />
           <GamePlayer />
+          <MyItem />
         </template>
         <template v-else>
           <InitText :map-height="getHeight" :map-width="getWidth" />
@@ -26,6 +27,7 @@ import MyScore from "./components/MyScore";
 import BlockBall from "./components/BlockBall";
 import GamePlayer from "./components/GamePlayer";
 import InitText from "./components/InitText";
+import MyItem from "./components/MyItem";
 import * as keyCodeConstants from "./constants/keycodeConstants";
 import { mapGetters } from "vuex";
 
@@ -59,6 +61,7 @@ export default {
     BlockBall,
     InitText,
     MyScore,
+    MyItem
   },
   destroyed() {
     clearInterval(this.intervalMakeBall);

@@ -9,3 +9,8 @@ export const generateId = () => {
 
   return newId;
 };
+
+
+export const addZero = (num) => {
+  return num < 10 ? "0" + num : "" + num;
+};

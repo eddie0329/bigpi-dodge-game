@@ -41,22 +41,22 @@ const getters = {
 const mutations = {
   [MUTATIONS_CONSTANTS.MOVE_LEFT](state) {
     if (isPlayerInsideOfLeftMap(state.status)) {
-      state.status.x -= 1;
+      state.status.x -= 10;
     }
   },
   [MUTATIONS_CONSTANTS.MOVE_RIGHT](state, { width }) {
     if (isPlayerInsideOfRightMap(state.status, width)) {
-      state.status.x += 1;
+      state.status.x += 10;
     }
   },
   [MUTATIONS_CONSTANTS.MOVE_UP](state) {
     if (isPlayerInsideOfUpMap(state.status)) {
-      state.status.y -= 1;
+      state.status.y -= 10;
     }
   },
   [MUTATIONS_CONSTANTS.MOVE_DOWN](state, { height }) {
     if (isPlayerInsideOfDownMap(state.status, height)) {
-      state.status.y += 1;
+      state.status.y += 10;
     }
   },
   [MUTATIONS_CONSTANTS.INIT_POSITION](state) {

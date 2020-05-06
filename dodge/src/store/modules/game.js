@@ -1,6 +1,5 @@
-const addZero = (num) => {
-  return num < 10 ? "0" + num : "" + num;
-};
+import { addZero } from "@/utils/helper";
+import * as gameSettings from "@/constants/gameSettings";
 
 const MUTATION_CONSTANTS = {
   INIT_GAME: "INIT_GAME",
@@ -15,7 +14,10 @@ const state = {
     gameStart: false,
     score: "00:00:00",
   },
-  intervalBlockBall: null,
+  intervalMakeBlockBall: null,
+  intervalMoveBlockBall: null,
+  intervalDeleteBlockBall: null,
+  intervalCheckCollision: null,
   startTime: null,
   endTime: null,
   intervalScore: null,
@@ -29,20 +31,29 @@ const getters = {
 const mutations = {
   [MUTATION_CONSTANTS.INIT_GAME](state, dispatch) {
     state.gameStatus.gameStart = true;
-    state.intervalBlockBall = setInterval(() => {
+    state.intervalMakeBlockBall = setInterval(() => {
       dispatch("blockBall/addBall", null, { root: true });
+    }, gameSettings.ballGenerateRate);
+    state.intervalMoveBlockBall = setInterval(() => {
       dispatch("blockBall/moveBall", null, { root: true });
+    }, gameSettings.ballMoveRate);
+    state.intervalDeleteBlockBall = setInterval(() => {
       dispatch("blockBall/removeBalls", null, { root: true });
+    }, gameSettings.ballDeleteRate);
+    state.intervalCheckCollision = setInterval(() => {
       dispatch("checkCollision");
-    }, 10);
+    }, gameSettings.ballCollisionRate);
     state.intervalScore = setInterval(() => {
       dispatch("addScore");
-    }, 1);
+    }, gameSettings.gameScoreRate);
   },
   [MUTATION_CONSTANTS.FINISH_GAME](state, dispatch) {
     state.gameStatus.gameStart = false;
     dispatch("player/resetPosition", null, { root: true });
-    clearInterval(state.intervalBlockBall);
+    clearInterval(state.intervalMakeBlockBall);
+    clearInterval(state.intervalMoveBlockBall);
+    clearInterval(state.intervalDeleteBlockBall);
+    clearInterval(state.intervalCheckCollision);
   },
   [MUTATION_CONSTANTS.CHECK_COLLISION](state, { rootState, dispatch }) {
     const { blockBall, player } = rootState;

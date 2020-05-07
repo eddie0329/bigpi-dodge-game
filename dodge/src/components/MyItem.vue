@@ -1,24 +1,17 @@
 <template>
-  <v-rect :config="configItem"/>
+  <v-rect :config="configEraserItem" />
 </template>
 
 <script>
+
 export default {
-  data() {
-    return {
-      configItem: {
-        x: 200,
-        y: 100,
-        width: 10,
-        height: 10,
-        fill: "yellow"
-      }
+  props: {
+    configEraserItem : {
+      type: Object,
+      required: true
     }
   }
-
-}
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

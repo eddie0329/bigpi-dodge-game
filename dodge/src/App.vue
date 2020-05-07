@@ -11,7 +11,7 @@
             :key="blockBall.id"
           />
           <GamePlayer />
-          <MyItem />
+          <MyItem :config-eraser-item="configEraserItem"/>
         </template>
         <template v-else>
           <InitText :map-height="getHeight" :map-width="getWidth" />
@@ -29,7 +29,7 @@ import GamePlayer from "./components/GamePlayer";
 import InitText from "./components/InitText";
 import MyItem from "./components/MyItem";
 import * as keyCodeConstants from "./constants/keycodeConstants";
-import { mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 const isArrowLeftPressed = (eventKeycode) => {
   return eventKeycode === keyCodeConstants.ARROW_LEFT;
@@ -76,6 +76,9 @@ export default {
     };
   },
   computed: {
+    ...mapState("item", {
+      configEraserItem: 'configEraserItem'
+    }),
     ...mapGetters({
       blockBalls: "blockBall/getBlockBalls",
       gameStatus: "game/getGameStatus",

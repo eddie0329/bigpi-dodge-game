@@ -1,0 +1,41 @@
+version: "3.7"
+services:
+  serv-front:
+    build:
+      dockerfile: dockerfile
+      context: ./dodge
+    networks:
+      - overlay
+    ports:
+      - 8080:8080
+  serv-back:
+    build:
+      dockerfile: dockerfile
+      context: ./back
+    networks:
+      - overlay
+    environment:
+      - DB_USER=root
+      - DB_PASSWORD=example
+      - DB_NAME=DEFAULT_DB
+      - DB_HOST=serv-db:27017
+    ports:
+      - 3000:3000
+  serv-db:
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+      - MONGO_INITDB_DATABASE=DEFAULT_DB
+    ports:
+      - 27017:27017
+    networks:
+      - overlay
+    volumes:
+      - "dbdata:/data/db"
+
+networks:
+  overlay:
+    driver: overlay
+volumes:
+  dbdata:

@@ -12,12 +12,13 @@ services:
     build:
       dockerfile: dockerfile
       context: ./back
+    restart: always # in case DB is not ready
     networks:
       - overlay
     environment:
       - DB_USER=root
       - DB_PASSWORD=example
-      - DB_NAME=DEFAULT_DB
+      - DB_NAME=defaultData
       - DB_HOST=serv-db:27017
     ports:
       - 3000:3000
@@ -26,7 +27,7 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=example
-      - MONGO_INITDB_DATABASE=DEFAULT_DB
+      - MONGO_INITDB_DATABASE=defaultData # must be alphanumeric. special characters should be avoided
     ports:
       - 27017:27017
     networks:

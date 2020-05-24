@@ -8,10 +8,17 @@ const dbUser = process.env.DB_USER;
 const dbPass = process.env.DB_PASSWORD;
 const dbName = process.env.DB_NAME;
 
-const dbUrl = `mongodb://${dbUser}:${dbPass}@${dbHost}/${dbName}`;
+const dbUrl = `mongodb://${dbHost}/${dbName}`;
 console.log("try connecting to", dbUrl);
 mongoose
-  .connect(dbUrl, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(dbUrl, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    dbName,
+    user: dbUser,
+    pass: dbPass,
+    authSource: 'admin'
+  })
   .catch((err) => {
     console.error(err);
     process.exit(1);
